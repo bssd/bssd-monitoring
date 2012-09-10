@@ -66,7 +66,7 @@ public class MonitorTest {
 	@Test
 	public void testWhenThresholdIsNotBrokenAlertIsNotRaised() {
 		when(this.mockThreshold.thresholdBroken(anyBoolean())).thenReturn(false);
-		this.monitor.valueChanged(Long.valueOf(5));
+		this.monitor.monitor();
 		verify(this.mockAlert, never()).alert();
 	}
 }

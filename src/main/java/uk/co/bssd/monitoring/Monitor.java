@@ -21,7 +21,4 @@ public class Monitor<T> {
 			this.alert.alert();
 		}
 	}
-
-	public void valueChanged(T value) {
-	}
 }
