@@ -1,20 +1,15 @@
 package uk.co.bssd.monitoring.loader;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.LocalVariableNode;
-import org.objectweb.asm.tree.MethodNode;
-
 import uk.co.bssd.monitoring.MonitoredValueAdapter;
+import uk.co.bssd.reflection.ClassWrapper;
+import uk.co.bssd.reflection.ConstructorWrapper;
+import uk.co.bssd.reflection.ParameterWrapper;
+import uk.co.bssd.reflection.ReflectionException;
 
 public class AdapterPropertiesLoader<T> implements
 		PropertiesLoader<MonitoredValueAdapter<T>> {
@@ -30,38 +25,28 @@ public class AdapterPropertiesLoader<T> implements
 				&& lastIndexOfDot(propertyName) == LAST_DOT_IN_PREFIX;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public MonitoredValueAdapter<T> load(Properties properties,
 			String propertyName) {
-		Class<?> clazz = getClass(properties, propertyName);
-		Constructor<?> constructor = constructor(clazz);
+		ClassWrapper clazz = getClassWrapper(properties, propertyName);
+		ConstructorWrapper constructor = constructor(clazz);
 		List<Object> arguments = arguments(properties, propertyName, clazz,
 				constructor);
-		return instantiate(constructor, arguments);
-	}
-
-	@SuppressWarnings("unchecked")
-	private MonitoredValueAdapter<T> instantiate(Constructor<?> constructor,
-			List<Object> arguments) {
-		try {
-			return (MonitoredValueAdapter<T>) constructor.newInstance(arguments
-					.toArray());
-		} catch (Exception e) {
-			throw new IllegalStateException("Unable to instantiate class", e);
-		}
+		return (MonitoredValueAdapter<T>)constructor.instantiate(arguments);
 	}
 
 	private List<Object> arguments(Properties properties, String propertyName,
-			Class<?> clazz, Constructor<?> constructor) {
-		List<ParameterDescriptor> parameters = parameters(clazz, constructor);
+			ClassWrapper clazz, ConstructorWrapper constructor) {
+		List<ParameterWrapper> parameters = constructor.parameters();
 
 		List<Object> args = new ArrayList<Object>();
-		for (ParameterDescriptor parameter : parameters) {
+		for (ParameterWrapper parameter : parameters) {
 			String key = propertyName + "." + parameter.name();
 
 			if (!properties.containsKey(key)) {
 				throw new IllegalStateException("Expected to find property '"
-						+ key + "' required for type '" + clazz + "'");
+						+ key + "' required for type '" + clazz.className() + "'");
 			}
 			Object unwrappedValue = properties.get(key);
 			Object parameterValue = convertParameterToCorrectType(properties,
@@ -72,12 +57,13 @@ public class AdapterPropertiesLoader<T> implements
 	}
 
 	private Object convertParameterToCorrectType(Properties properties,
-			String propertyName, ParameterDescriptor parameter,
+			String propertyName, ParameterWrapper parameter,
 			Object unwrappedValue) {
 		String classname;
 
 		if (parameter.isGenericType()) {
-			classname = (String)properties.get(propertyName + ".type." + parameter.genericTypeName()); 
+			classname = (String) properties.get(propertyName + ".type."
+					+ parameter.genericTypeName());
 		} else {
 			classname = parameter.classname();
 		}
@@ -99,115 +85,19 @@ public class AdapterPropertiesLoader<T> implements
 		}
 	}
 
-	private Constructor<?> constructor(Class<?> clazz) {
-		Constructor<?>[] constructors = clazz.getConstructors();
-		if (constructors.length != 1) {
-			throw new IllegalStateException(
+	private ConstructorWrapper constructor(ClassWrapper classWrapper) {
+		List<ConstructorWrapper> constructors = classWrapper.constructors();
+		if (constructors.size() != 1) {
+			throw new ReflectionException(
 					"Expect only 1 constructor to avoid ambiguity");
 		}
-		return constructors[0];
+		return constructors.get(0);
 	}
 
-	private Class<?> getClass(Properties properties, String propertyName) {
+	private ClassWrapper getClassWrapper(Properties properties,
+			String propertyName) {
 		String className = properties.getProperty(propertyName);
-		try {
-			return Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException(
-					"Unable to load specified class as it could not be found",
-					e);
-		}
-	}
-
-	private List<ParameterDescriptor> parameters(Class<?> clazz,
-			Constructor<?> constructor) {
-		InputStream classFileInputStream = classInputStream(clazz);
-		ClassNode classNode = classNode(classFileInputStream);
-		return parameters(classNode, constructor);
-	}
-
-	private InputStream classInputStream(Class<?> clazz) {
-		ClassLoader declaringClassLoader = clazz.getClassLoader();
-		Type declaringType = Type.getType(clazz);
-		String url = declaringType.getInternalName() + ".class";
-
-		InputStream classFileInputStream = declaringClassLoader
-				.getResourceAsStream(url);
-		if (classFileInputStream == null) {
-			throw new IllegalArgumentException(
-					"The constructor's class loader cannot find the bytecode that defined the constructor's class (URL: "
-							+ url + ")");
-		}
-		return classFileInputStream;
-	}
-
-	@SuppressWarnings("unchecked")
-	private List<ParameterDescriptor> parameters(ClassNode classNode,
-			Constructor<?> constructor) {
-		MethodNode method = constructorMethodNode(classNode, constructor);
-		Type[] argumentTypes = Type.getArgumentTypes(method.desc);
-		List<ParameterDescriptor> parameterNames = new ArrayList<ParameterDescriptor>(
-				argumentTypes.length);
-
-		java.lang.reflect.Type[] genericParameterTypes = constructor
-				.getGenericParameterTypes();
-
-		List<LocalVariableNode> localVariables = method.localVariables;
-		// The first local variable actually represents "this" object
-		for (int i = 0; i < argumentTypes.length; i++) {
-			String name = localVariables.get(i + 1).name;
-			Type type = argumentTypes[0];
-			String parameterClass = type.getClassName();
-
-			ParameterDescriptor parameterDescriptor;
-
-			java.lang.reflect.Type genericParameterType = genericParameterTypes[i];
-			if (genericParameterType instanceof TypeVariable) {
-				TypeVariable<?> typeVariable = (TypeVariable<?>) genericParameterType;
-				parameterDescriptor = new ParameterDescriptor(name,
-						parameterClass, typeVariable.getName());
-			} else {
-				parameterDescriptor = new ParameterDescriptor(name,
-						parameterClass);
-			}
-
-			parameterNames.add(parameterDescriptor);
-		}
-
-		return parameterNames;
-	}
-
-	@SuppressWarnings("unchecked")
-	private MethodNode constructorMethodNode(ClassNode classNode,
-			Constructor<?> constructor) {
-		List<MethodNode> methods = classNode.methods;
-		String constructorDescriptor = Type
-				.getConstructorDescriptor(constructor);
-		for (MethodNode method : methods) {
-			if (method.name.equals("<init>")
-					&& method.desc.equals(constructorDescriptor)) {
-				return method;
-			}
-		}
-		throw new IllegalStateException(
-				"Unable to find method node for constructor");
-	}
-
-	private ClassNode classNode(InputStream classFileInputStream) {
-		try {
-			ClassNode classNode = new ClassNode();
-			ClassReader classReader = new ClassReader(classFileInputStream);
-			classReader.accept(classNode, 0);
-			return classNode;
-		} catch (IOException e) {
-			throw new IllegalStateException(
-					"Unable to determine parameter names for constructor", e);
-		} finally {
-			try {
-				classFileInputStream.close();
-			} catch (IOException e) {
-			}
-		}
+		return ClassWrapper.forName(className);
 	}
 
 	private static int lastIndexOfDot(String string) {
