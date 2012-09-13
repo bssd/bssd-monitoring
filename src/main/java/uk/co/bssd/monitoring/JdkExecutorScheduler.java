@@ -17,4 +17,9 @@ public class JdkExecutorScheduler implements Scheduler {
 		this.executor.scheduleAtFixedRate(job, intervalMs, intervalMs,
 				TimeUnit.MILLISECONDS);
 	}
+	
+	@Override
+	public void shutdown() {
+		this.executor.shutdown();		
+	}
 }

@@ -30,6 +30,7 @@ public class CommandLineShell {
 	}
 	
 	public void shutdown() {
+		this.monitors.shutdown();
 		this.shutdown.set(true);
 	}
 	

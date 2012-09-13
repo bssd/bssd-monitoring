@@ -27,4 +27,9 @@ public class Monitors {
 		MonitorJob job = new MonitorJob(monitor);
 		this.scheduler.schedule(job, intervalMs);
 	}
+	
+	public void shutdown() {
+		this.scheduler.shutdown();
+		this.monitors.clear();
+	}
 }
