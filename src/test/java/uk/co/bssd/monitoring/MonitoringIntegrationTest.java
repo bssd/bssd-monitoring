@@ -1,5 +1,6 @@
 package uk.co.bssd.monitoring;
 
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
@@ -41,14 +42,16 @@ public class MonitoringIntegrationTest {
 		this.monitors.register(monitor, 1);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testWhenConditionIsNotBrokenAlertIsNotRaised() {
-		verify(this.mockAlert, timeout(TIMEOUT_MS).never()).alert();
+		verify(this.mockAlert, timeout(TIMEOUT_MS).never()).alert(any(AlertEvent.class));
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testWhenConditionIsBrokenAlertIsRaised() {
 		this.monitoredValue.set(11);
-		verify(this.mockAlert, timeout(TIMEOUT_MS)).alert();
+		verify(this.mockAlert, timeout(TIMEOUT_MS)).alert(any(AlertEvent.class));
 	}
 }

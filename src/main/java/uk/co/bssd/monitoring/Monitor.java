@@ -18,7 +18,8 @@ public class Monitor<T> {
 		T value = this.valueAdapter.currentValue();
 		boolean conditionMet = this.condition.conditionMet(value);
 		if (this.threshold.thresholdBroken(conditionMet)) {
-			this.alert.alert();
+			AlertEvent<T> event = new AlertEvent<T>(value, condition, threshold);
+			this.alert.alert(event);
 		}
 	}
 }

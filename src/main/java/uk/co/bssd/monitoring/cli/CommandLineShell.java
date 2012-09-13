@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import uk.co.bssd.monitoring.Monitors;
+import uk.co.bssd.monitoring.loader.MonitorsLoader;
 
 public class CommandLineShell {
 
@@ -23,11 +24,15 @@ public class CommandLineShell {
 		this.commands = new Commands();
 		this.shutdown = new AtomicBoolean(false);
 	}
+
+	public void loadMonitors(MonitorsLoader loader) {
+		loader.load(this.monitors);
+	}
 	
 	public void shutdown() {
 		this.shutdown.set(true);
 	}
-
+	
 	private void startHandlingCommands() {
 		System.out.println("Monitoring command line shell started");
 		while (isRunning()) {

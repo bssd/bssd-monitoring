@@ -14,6 +14,7 @@ public class CommandsTest {
 	private static final String COMMAND_UNKNOWN = "unknown";
 	private static final String COMMAND_HELP = "help";
 	private static final String COMMAND_LIST = "list";
+	private static final String COMMAND_LOAD = "load";
 	private static final String COMMAND_EXIT = "exit";
 
 	private Commands commands;
@@ -42,6 +43,12 @@ public class CommandsTest {
 	}
 
 	@Test
+	public void testCorrectHandlerIsReturnForLoadCommand() {
+		assertThat(this.commands.handlerFor(COMMAND_LOAD),
+				is(instanceOf(LoadCommand.class)));
+	}
+
+	@Test
 	public void testCorrectHandlerIsReturnedForExitCommand() {
 		assertThat(this.commands.handlerFor(COMMAND_EXIT),
 				is(instanceOf(ExitCommand.class)));
@@ -49,7 +56,7 @@ public class CommandsTest {
 
 	@Test
 	public void testListReturnsCorrectNumberOfHandlers() {
-		assertThat(this.commands.list().size(), is(3));
+		assertThat(this.commands.list().size(), is(4));
 	}
 
 	@Test
@@ -57,6 +64,7 @@ public class CommandsTest {
 		Iterator<CommandHandler> handlers = this.commands.list().iterator();
 		assertThat(handlers.next(), is(instanceOf(HelpCommand.class)));
 		assertThat(handlers.next(), is(instanceOf(ListCommand.class)));
+		assertThat(handlers.next(), is(instanceOf(LoadCommand.class)));
 		assertThat(handlers.next(), is(instanceOf(ExitCommand.class)));
 	}
 }

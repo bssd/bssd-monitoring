@@ -1,7 +1,7 @@
 package uk.co.bssd.monitoring.cli;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +11,7 @@ public class Commands {
 	private final CommandHandler defaultHandler;
 
 	public Commands() {
-		this.handlers = new HashMap<String, CommandHandler>();
+		this.handlers = new LinkedHashMap<String, CommandHandler>();
 		this.defaultHandler = new UnknownCommand();
 		registerHandlers();
 	}
@@ -30,6 +30,7 @@ public class Commands {
 	private void registerHandlers() {
 		registerHandler(new HelpCommand(this));
 		registerHandler(new ListCommand());
+		registerHandler(new LoadCommand());
 		registerHandler(new ExitCommand());
 	}
 

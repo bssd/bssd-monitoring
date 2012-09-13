@@ -2,5 +2,5 @@ package uk.co.bssd.monitoring;
 
 public interface Alert {
 
-	void alert();
+	<T> void alert(AlertEvent<T> event);
 }
