@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.co.bssd.jmx.ManagementBeanServer;
+import uk.co.bssd.jmx.LocalManagementBeanServer;
 
 public class JmxAttributeAdapterTest {
 
@@ -31,7 +31,7 @@ public class JmxAttributeAdapterTest {
 	private static final String ATTRIBUTE_NAME = "MonitoredValue";
 
 	private MonitoredAttribute monitoredAttribute;
-	private ManagementBeanServer managementBeanServer;
+	private LocalManagementBeanServer managementBeanServer;
 
 	private MonitoredValueAdapter<Integer> adapter;
 	
@@ -39,10 +39,10 @@ public class JmxAttributeAdapterTest {
 	public void before() {
 		this.monitoredAttribute = new MonitoredAttribute();
 		
-		this.managementBeanServer = new ManagementBeanServer();
+		this.managementBeanServer = new LocalManagementBeanServer();
 		this.managementBeanServer.registerManagementBean(MBEAN_NAME, this.monitoredAttribute);
 		
-		this.adapter = new JmxAttributeAdapter<Integer>(MBEAN_NAME, ATTRIBUTE_NAME, Integer.class);
+		this.adapter = new JmxAttributeAdapter<Integer>(this.managementBeanServer, MBEAN_NAME, ATTRIBUTE_NAME, Integer.class);
 	}
 	
 	@Test

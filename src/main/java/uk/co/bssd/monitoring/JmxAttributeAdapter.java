@@ -8,8 +8,7 @@ public class JmxAttributeAdapter<T> implements MonitoredValueAdapter<T> {
 
 	private final ManagementAttribute<T> attribute;
 	
-	public JmxAttributeAdapter(String objectName, String attributeName, Class<T> attributeClazz) {
-		ManagementBeanServer mbeanServer = new ManagementBeanServer();
+	public JmxAttributeAdapter(ManagementBeanServer mbeanServer, String objectName, String attributeName, Class<T> attributeClazz) {
 		ManagementBean mbean = mbeanServer.findManagementBean(objectName);
 		this.attribute = mbean.findAttribute(attributeName, attributeClazz);
 	}
