@@ -7,7 +7,7 @@ import org.apache.log4j.PatternLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Slf4jValueLogger<T> {
+public class Slf4jValueLogger<T> implements ValueReporter<T>{
 
 	private static final String APPENDER_NAME = "file";
 	
@@ -17,7 +17,7 @@ public class Slf4jValueLogger<T> {
 		this.logger = LoggerFactory.getLogger(Slf4jValueLogger.class);
 
 		if (log4jLogger().getAppender(APPENDER_NAME) == null) {
-			PatternLayout layout = new PatternLayout("%d,%m%n");
+			PatternLayout layout = new PatternLayout("%d{yyyy-MM-dd HH:mm:ss.SSS},%m%n");
 
 			try {
 				FileAppender fileAppender = new FileAppender(layout, filename);
@@ -33,7 +33,7 @@ public class Slf4jValueLogger<T> {
 		return org.apache.log4j.Logger.getLogger(Slf4jValueLogger.class);
 	}
 	
-	public void value(T currentValue) {
-		this.logger.info("{}", currentValue); 
+	public void report(T value) {
+		this.logger.info("{}", value); 
 	}
 }

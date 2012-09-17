@@ -5,35 +5,37 @@
 
 	<bean name="thresholdBreaksImmediately" class="uk.co.bssd.monitoring.ThresholdBreaksImmediately" />
 
-	<bean name="ten" class="java.lang.Long">
+	<bean name="ten" class="java.lang.Double">
 		<constructor-arg index="0" type="java.lang.String"
 			value="10" />
 	</bean>
 
-	<bean name="managementBeanServer" class="uk.co.bssd.jmx.RemoteManagementBeanServerFactory"
-		factory-method="managementBeanServer">
-		<constructor-arg name="hostname" value="localhost" />
-		<constructor-arg name="port" value="1234" />
+	<!-- <bean name="managementBeanServer" class="uk.co.bssd.jmx.RemoteManagementBeanServerFactory" 
+		factory-method="managementBeanServer"> <constructor-arg name="hostname" value="localhost" 
+		/> <constructor-arg name="port" value="1234" /> </bean> -->
+
+	<bean name="managementBeanServer" class="uk.co.bssd.jmx.LocalManagementBeanServer" />
+
+	<bean name="cpuUsageAdapter" class="uk.co.bssd.monitoring.CpuUsageAdapter">
+		<constructor-arg name="beanServer" ref="managementBeanServer" />
 	</bean>
 
-	<bean name="fixedValueAdapter" class="uk.co.bssd.monitoring.JmxAttributeAdapter">
-		<constructor-arg name="mbeanServer" ref="managementBeanServer" />
-		<constructor-arg name="objectName" value="uk.co.bssd:type=simpleMBean" />
-		<constructor-arg name="attributeName" value="IntValue" />
-		<constructor-arg name="attributeClazz" value="java.lang.Integer" />
-	</bean>
-
-	<bean name="valueGreaterThan10" class="uk.co.bssd.monitoring.LessThan">
+	<bean name="valueGreaterThan10" class="uk.co.bssd.monitoring.GreaterThan">
 		<constructor-arg name="threshold" ref="ten" />
 	</bean>
 
 	<bean name="consoleAlert" class="uk.co.bssd.monitoring.ConsoleAlert" />
 
+	<bean name="valueReporter" class="uk.co.bssd.monitoring.Slf4jValueLogger">
+		<constructor-arg name="filename" value="cpu-usage.csv" />
+	</bean>
+
 	<bean name="exampleMonitor" class="uk.co.bssd.monitoring.Monitor">
-		<constructor-arg name="adapter" ref="fixedValueAdapter" />
+		<constructor-arg name="adapter" ref="cpuUsageAdapter" />
 		<constructor-arg name="condition" ref="valueGreaterThan10" />
 		<constructor-arg name="threshold" ref="thresholdBreaksImmediately" />
 		<constructor-arg name="alert" ref="consoleAlert" />
+		<!-- <constructor-arg name="reporter" ref="valueReporter" /> -->
 	</bean>
 
 	<bean name="exampleMonitorDefinition" class="uk.co.bssd.monitoring.loader.MonitorDefinition">
