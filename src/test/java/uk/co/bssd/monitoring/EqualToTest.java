@@ -31,4 +31,9 @@ public class EqualToTest {
 	public void testConditionIsNotMetIfGreaterThanThreshold() {
 		assertThat(this.condition.conditionMet(THRESHOLD + 1), is(false));
 	}
+	
+	@Test
+	public void testToString() {
+		assertThat(this.condition.toString(), is("Equal to " + THRESHOLD));
+	}
 }

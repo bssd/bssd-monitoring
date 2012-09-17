@@ -5,29 +5,33 @@
 
 	<bean name="thresholdBreaksImmediately" class="uk.co.bssd.monitoring.ThresholdBreaksImmediately" />
 
-	<bean name="two" class="java.lang.Long">
+	<bean name="ten" class="java.lang.Long">
 		<constructor-arg index="0" type="java.lang.String"
-			value="2" />
+			value="10" />
 	</bean>
 
-	<bean name="five" class="java.lang.Long">
-		<constructor-arg index="0" type="java.lang.String"
-			value="5" />
+	<bean name="managementBeanServer" class="uk.co.bssd.jmx.RemoteManagementBeanServerFactory"
+		factory-method="managementBeanServer">
+		<constructor-arg name="hostname" value="localhost" />
+		<constructor-arg name="port" value="1234" />
 	</bean>
 
-	<bean name="fixedValueAdapter" class="uk.co.bssd.monitoring.FixedValueAdapter">
-		<constructor-arg index="0" ref="two" />
+	<bean name="fixedValueAdapter" class="uk.co.bssd.monitoring.JmxAttributeAdapter">
+		<constructor-arg name="mbeanServer" ref="managementBeanServer" />
+		<constructor-arg name="objectName" value="uk.co.bssd:type=simpleMBean" />
+		<constructor-arg name="attributeName" value="IntValue" />
+		<constructor-arg name="attributeClazz" value="java.lang.Integer" />
 	</bean>
 
-	<bean name="valueLessThan5" class="uk.co.bssd.monitoring.LessThan">
-		<constructor-arg name="threshold" ref="five" />
+	<bean name="valueGreaterThan10" class="uk.co.bssd.monitoring.LessThan">
+		<constructor-arg name="threshold" ref="ten" />
 	</bean>
 
 	<bean name="consoleAlert" class="uk.co.bssd.monitoring.ConsoleAlert" />
 
 	<bean name="exampleMonitor" class="uk.co.bssd.monitoring.Monitor">
 		<constructor-arg name="adapter" ref="fixedValueAdapter" />
-		<constructor-arg name="condition" ref="valueLessThan5" />
+		<constructor-arg name="condition" ref="valueGreaterThan10" />
 		<constructor-arg name="threshold" ref="thresholdBreaksImmediately" />
 		<constructor-arg name="alert" ref="consoleAlert" />
 	</bean>
