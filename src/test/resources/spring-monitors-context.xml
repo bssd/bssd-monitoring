@@ -10,10 +10,6 @@
 			value="10" />
 	</bean>
 
-	<!-- <bean name="managementBeanServer" class="uk.co.bssd.jmx.RemoteManagementBeanServerFactory" 
-		factory-method="managementBeanServer"> <constructor-arg name="hostname" value="localhost" 
-		/> <constructor-arg name="port" value="1234" /> </bean> -->
-
 	<bean name="managementBeanServer" class="uk.co.bssd.jmx.LocalManagementBeanServer" />
 
 	<bean name="cpuUsageAdapter" class="uk.co.bssd.monitoring.CpuUsageAdapter">
@@ -26,16 +22,11 @@
 
 	<bean name="consoleAlert" class="uk.co.bssd.monitoring.ConsoleAlert" />
 
-	<bean name="valueReporter" class="uk.co.bssd.monitoring.Slf4jValueLogger">
-		<constructor-arg name="filename" value="cpu-usage.csv" />
-	</bean>
-
 	<bean name="exampleMonitor" class="uk.co.bssd.monitoring.Monitor">
 		<constructor-arg name="adapter" ref="cpuUsageAdapter" />
 		<constructor-arg name="condition" ref="valueGreaterThan10" />
 		<constructor-arg name="threshold" ref="thresholdBreaksImmediately" />
 		<constructor-arg name="alert" ref="consoleAlert" />
-		<!-- <constructor-arg name="reporter" ref="valueReporter" /> -->
 	</bean>
 
 	<bean name="exampleMonitorDefinition" class="uk.co.bssd.monitoring.loader.MonitorDefinition">
