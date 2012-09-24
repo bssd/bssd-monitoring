@@ -8,11 +8,13 @@ import org.junit.Test;
 
 public class ThresholdBreaksOnInvocationsTest {
 
+	private static final int NUMBER_INVOCATIONS = 2;
+	
 	private Threshold samplingRate;
 	
 	@Before
 	public void before() {
-		this.samplingRate = new ThresholdBreaksOnInvocations(2);
+		this.samplingRate = new ThresholdBreaksOnInvocations(NUMBER_INVOCATIONS);
 	}
 	
 	@Test
@@ -39,4 +41,9 @@ public class ThresholdBreaksOnInvocationsTest {
 		this.samplingRate.thresholdBroken(false);
 		assertThat(this.samplingRate.thresholdBroken(true), is(false));
 	}
+	
+	@Test
+	public void testToString() {
+		assertThat(this.samplingRate.toString(), is("After "+  NUMBER_INVOCATIONS + " invocations"));
+	}	
 }

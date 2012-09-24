@@ -12,4 +12,9 @@ public class GreaterThanEqual<T extends Number> extends NumberCondition<T> {
 	public boolean conditionMet(T value) {
 		return this.threshold.floatValue() <= value.floatValue();
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("Greater than or equal to %d", threshold);
+	}
 }

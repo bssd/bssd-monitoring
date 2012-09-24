@@ -43,4 +43,9 @@ public class ThresholdBreaksImmediatelyTest {
 		this.samplingRate.thresholdBroken(false);
 		assertThat(this.samplingRate.thresholdBroken(true), is(true));
 	}
+	
+	@Test
+	public void testToString() {
+		assertThat(this.samplingRate.toString(), is("Immediately"));
+	}	
 }

@@ -20,4 +20,9 @@ public class ThresholdBreaksOnInvocations implements Threshold {
 		}
 		return this.conditionMetCount == this.invocations;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("After %d invocations", this.invocations);
+	}
 }

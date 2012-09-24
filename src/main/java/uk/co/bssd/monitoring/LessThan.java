@@ -12,4 +12,9 @@ public class LessThan<T extends Number> extends NumberCondition<T> {
 	public boolean conditionMet(T value) {
 		return this.threshold.floatValue() > value.floatValue();
 	}
+
+	@Override
+	public String toString() {
+		return String.format("Less than %d", threshold);
+	}
 }

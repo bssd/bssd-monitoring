@@ -14,4 +14,9 @@ public class ThresholdBreaksImmediately implements Threshold{
 	public boolean thresholdBroken(boolean conditionMet) {
 		return this.thresholdTriggered.compareAndSet(!conditionMet, conditionMet);
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("Immediately");
+	}
 }

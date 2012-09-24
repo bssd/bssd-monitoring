@@ -57,6 +57,11 @@ public class ThresholdBreaksOnTimeTest {
 		assertThat(this.samplingRate.thresholdBroken(true), is(false));
 	}
 	
+	@Test
+	public void testToString() {
+		assertThat(this.samplingRate.toString(), is("After "+  THRESHOLD_SECONDS + " seconds"));
+	}
+	
 	private void setTimeNowPlusSeconds(int seconds) {
 		DateTimeUtils.setCurrentMillisFixed(nowPlusSeconds(seconds));
 	}

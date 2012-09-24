@@ -25,4 +25,9 @@ public class ThresholdBreaksOnTime implements Threshold {
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("After %d seconds", this.seconds);
+	}
 }

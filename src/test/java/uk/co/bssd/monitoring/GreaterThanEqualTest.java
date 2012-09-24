@@ -31,4 +31,9 @@ public class GreaterThanEqualTest {
 	public void testConditionIsMetIfGreaterThanThreshold() {
 		assertThat(this.condition.conditionMet(THRESHOLD + 1), is(true));
 	}
+	
+	@Test
+	public void testToString() {
+		assertThat(this.condition.toString(), is("Greater than or equal to " + THRESHOLD));
+	}	
 }

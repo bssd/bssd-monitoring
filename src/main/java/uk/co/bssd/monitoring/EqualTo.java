@@ -15,6 +15,6 @@ public class EqualTo<T extends Number> extends NumberCondition<T> {
 	
 	@Override
 	public String toString() {
-		return String.format("Equal to %s", this.threshold);
+		return String.format("Equal to %d", this.threshold);
 	}
 }
