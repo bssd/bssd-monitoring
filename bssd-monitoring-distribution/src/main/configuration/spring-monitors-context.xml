@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<bean name="thresholdBreaksImmediately" class="uk.co.bssd.monitoring.ThresholdBreaksImmediately" />
+
+	<bean name="ten" class="java.lang.Double">
+		<constructor-arg index="0" type="java.lang.String"
+			value="10" />
+	</bean>
+
+	<bean name="managementBeanServer" class="uk.co.bssd.jmx.LocalManagementBeanServer" />
+
+	<bean name="cpuUsageAdapter" class="uk.co.bssd.monitoring.CpuUsageAdapter">
+		<constructor-arg name="beanServer" ref="managementBeanServer" />
+	</bean>
+
+	<bean name="valueGreaterThan10" class="uk.co.bssd.monitoring.GreaterThan">
+		<constructor-arg name="threshold" ref="ten" />
+	</bean>
+
+	<bean name="consoleAlert" class="uk.co.bssd.monitoring.ConsoleAlert" />
+
+	<bean name="exampleMonitor" class="uk.co.bssd.monitoring.Monitor">
+		<constructor-arg name="adapter" ref="cpuUsageAdapter" />
+		<constructor-arg name="condition" ref="valueGreaterThan10" />
+		<constructor-arg name="threshold" ref="thresholdBreaksImmediately" />
+		<constructor-arg name="alert" ref="consoleAlert" />
+	</bean>
+
+	<bean name="exampleMonitorDefinition" class="uk.co.bssd.monitoring.loader.MonitorDefinition">
+		<constructor-arg name="monitor" ref="exampleMonitor" />
+		<constructor-arg name="monitorPeriodMs" value="10" />
+	</bean>
+</beans>
