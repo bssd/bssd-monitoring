@@ -2,6 +2,7 @@ package uk.co.bssd.monitoring.cli;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 import java.io.PrintStream;
@@ -13,10 +14,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ListCommandTest {
+import uk.co.bssd.monitoring.loader.MonitorsLoader;
 
-	private static final String COMMAND = "list";
+@RunWith(MockitoJUnitRunner.class)
+public class LoadCommandTest {
+
+	private static final String COMMAND = "load";
 
 	@Mock
 	private CommandLineShell mockShell;
@@ -30,7 +33,7 @@ public class ListCommandTest {
 	
 	@Before
 	public void before() {
-		this.handler = new ListCommand();
+		this.handler = new LoadCommand();
 		
 		this.realOutputStream = System.out;
 		System.setOut(this.mockOutputStream);
@@ -48,12 +51,18 @@ public class ListCommandTest {
 	
 	@Test
 	public void testDescription() {
-		assertThat(this.handler.description(), is("List all the registered monitors"));
+		assertThat(this.handler.description(), is("Load the monitors from the spring-monitors-context.xml configuration file"));
 	}
 	
 	@Test
-	public void testHandlerWhenNoMonitorsAreRegistered() {
+	public void testInvokeHandlerCallsShellBackWithMonitorLoader() {
 		this.handler.handle(COMMAND, this.mockShell);
-		verify(this.mockOutputStream).println("No monitors registered");
+		verify(this.mockShell).loadMonitors(any(MonitorsLoader.class));
+	}
+	
+	@Test
+	public void testSuccessfulInvocationNotifiesOutputOfSuccess() {
+		this.handler.handle(COMMAND, this.mockShell);
+		verify(this.mockOutputStream).println("Monitors loaded successfully");
 	}
 }
