@@ -15,6 +15,6 @@ public class LessThanEqual<T extends Number> extends NumberCondition<T> {
 	
 	@Override
 	public String toString() {
-		return String.format("Less than or equal to %d", threshold);
+		return String.format("Less than or equal to %s", threshold);
 	}
 }

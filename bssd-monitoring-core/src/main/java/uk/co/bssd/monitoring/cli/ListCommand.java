@@ -14,6 +14,6 @@ public class ListCommand implements CommandHandler {
 
 	@Override
 	public void handle(String command, CommandLineShell shell) {
-		System.out.println("No monitors registered");
+		shell.listMonitors(new SystemOutMonitorsStatus());
 	}
 }

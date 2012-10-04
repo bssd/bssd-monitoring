@@ -29,6 +29,10 @@ public class CommandLineShell {
 		loader.load(this.monitors);
 	}
 	
+	public void listMonitors(MonitorsOutput output) {
+		output.list(this.monitors);
+	}
+	
 	public void shutdown() {
 		this.monitors.shutdown();
 		this.shutdown.set(true);

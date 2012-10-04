@@ -2,6 +2,7 @@ package uk.co.bssd.monitoring.cli;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 import java.io.PrintStream;
@@ -52,8 +53,8 @@ public class ListCommandTest {
 	}
 	
 	@Test
-	public void testHandlerWhenNoMonitorsAreRegistered() {
+	public void testHandlerCallsShellWithMonitorOutput() {
 		this.handler.handle(COMMAND, this.mockShell);
-		verify(this.mockOutputStream).println("No monitors registered");
+		verify(this.mockShell).listMonitors(any(MonitorsOutput.class));
 	}
 }

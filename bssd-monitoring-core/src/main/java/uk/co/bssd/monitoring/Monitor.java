@@ -8,18 +8,21 @@ public class Monitor<T> {
 	private final Alert alert;
 	private final ValueReporter<T> valueReporter;
 
-	public Monitor(MonitoredValueAdapter<T> adapter, Condition<T> condition, Threshold threshold, Alert alert) {
-		this(adapter, condition, threshold, alert, new DoNothingValueReporter<T>());
+	public Monitor(MonitoredValueAdapter<T> adapter, Condition<T> condition,
+			Threshold threshold, Alert alert) {
+		this(adapter, condition, threshold, alert,
+				new DoNothingValueReporter<T>());
 	}
-	
-	public Monitor(MonitoredValueAdapter<T> adapter, Condition<T> condition, Threshold threshold, Alert alert, ValueReporter<T> reporter) {
+
+	public Monitor(MonitoredValueAdapter<T> adapter, Condition<T> condition,
+			Threshold threshold, Alert alert, ValueReporter<T> reporter) {
 		this.valueAdapter = adapter;
 		this.condition = condition;
 		this.threshold = threshold;
 		this.alert = alert;
 		this.valueReporter = reporter;
 	}
-	
+
 	public void monitor() {
 		T value = this.valueAdapter.currentValue();
 		this.valueReporter.report(value);
@@ -32,5 +35,13 @@ public class Monitor<T> {
 			AlertEvent<T> event = new AlertEvent<T>(value, condition, threshold);
 			this.alert.alert(event);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return String
+				.format("Value Adapter [%s], Condition [%s], Threshold [%s], Alert [%s]",
+						this.valueAdapter, this.condition, this.threshold,
+						this.alert);
 	}
 }

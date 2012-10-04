@@ -15,6 +15,6 @@ public class GreaterThan<T extends Number> extends NumberCondition<T> {
 	
 	@Override
 	public String toString() {
-		return String.format("Greater than %d", threshold);
+		return String.format("Greater than %s", threshold);
 	}
 }

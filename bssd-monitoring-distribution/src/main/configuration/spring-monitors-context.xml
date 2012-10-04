@@ -5,9 +5,9 @@
 
 	<bean name="thresholdBreaksImmediately" class="uk.co.bssd.monitoring.ThresholdBreaksImmediately" />
 
-	<bean name="ten" class="java.lang.Double">
+	<bean name="seventy" class="java.lang.Double">
 		<constructor-arg index="0" type="java.lang.String"
-			value="10" />
+			value="70" />
 	</bean>
 
 	<bean name="managementBeanServer" class="uk.co.bssd.jmx.LocalManagementBeanServer" />
@@ -16,15 +16,15 @@
 		<constructor-arg name="beanServer" ref="managementBeanServer" />
 	</bean>
 
-	<bean name="valueGreaterThan10" class="uk.co.bssd.monitoring.GreaterThan">
-		<constructor-arg name="threshold" ref="ten" />
+	<bean name="valueGreaterThan70" class="uk.co.bssd.monitoring.GreaterThan">
+		<constructor-arg name="threshold" ref="seventy" />
 	</bean>
 
 	<bean name="consoleAlert" class="uk.co.bssd.monitoring.ConsoleAlert" />
 
 	<bean name="exampleMonitor" class="uk.co.bssd.monitoring.Monitor">
 		<constructor-arg name="adapter" ref="cpuUsageAdapter" />
-		<constructor-arg name="condition" ref="valueGreaterThan10" />
+		<constructor-arg name="condition" ref="valueGreaterThan70" />
 		<constructor-arg name="threshold" ref="thresholdBreaksImmediately" />
 		<constructor-arg name="alert" ref="consoleAlert" />
 	</bean>
