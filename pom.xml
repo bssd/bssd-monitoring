@@ -13,7 +13,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<bssd.jmx.version>0.0.2</bssd.jmx.version>
+		<bssd.jmx.version>0.0.3</bssd.jmx.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
 	</properties>
 
