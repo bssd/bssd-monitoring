@@ -16,28 +16,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>uk.co.bssd</groupId>
-			<artifactId>bssd-monitoring-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
+			<artifactId>bssd-monitoring-spring</artifactId>
 		</dependency>
 
 		<!-- Test Dependencies -->
-		<dependency>
-			<groupId>uk.co.bssd</groupId>
-			<artifactId>bssd-jmx</artifactId>
-			<type>test-jar</type>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit-dep</artifactId>
@@ -51,11 +33,6 @@
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-library</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

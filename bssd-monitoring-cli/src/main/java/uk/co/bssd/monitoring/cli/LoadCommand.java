@@ -16,7 +16,7 @@
 package uk.co.bssd.monitoring.cli;
 
 import uk.co.bssd.monitoring.loader.MonitorsLoader;
-import uk.co.bssd.monitoring.loader.SpringMonitorsLoader;
+import uk.co.bssd.monitoring.spring.SpringMonitorsLoader;
 
 public class LoadCommand implements CommandHandler {
 

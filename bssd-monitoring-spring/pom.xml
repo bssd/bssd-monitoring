@@ -7,24 +7,20 @@
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>bssd-monitoring-core</artifactId>
+	<artifactId>bssd-monitoring-spring</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Bssd Monitoring Core</name>
-	<description>Core of the monitoring framework</description>
+	<name>Bssd Monitoring Spring</name>
+	<description>Support for configuring the monitoring framework via Spring</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>uk.co.bssd</groupId>
-			<artifactId>bssd-jmx</artifactId>
+			<artifactId>bssd-monitoring-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
 		</dependency>
 
 		<!-- Test Dependencies -->
@@ -41,11 +37,6 @@
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-library</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

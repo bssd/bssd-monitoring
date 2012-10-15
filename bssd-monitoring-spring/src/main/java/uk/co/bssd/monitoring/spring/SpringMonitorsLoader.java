@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.bssd.monitoring.loader;
+package uk.co.bssd.monitoring.spring;
 
 import java.util.Map;
 
@@ -21,6 +21,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import uk.co.bssd.monitoring.Monitors;
+import uk.co.bssd.monitoring.loader.MonitorDefinition;
+import uk.co.bssd.monitoring.loader.MonitorsLoader;
 
 public class SpringMonitorsLoader implements MonitorsLoader {
 

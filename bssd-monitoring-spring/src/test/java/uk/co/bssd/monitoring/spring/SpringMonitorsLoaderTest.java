@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.bssd.monitoring.loader;
+package uk.co.bssd.monitoring.spring;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -22,6 +22,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.co.bssd.monitoring.Monitors;
+import uk.co.bssd.monitoring.loader.MonitorsLoader;
+import uk.co.bssd.monitoring.spring.SpringMonitorsLoader;
 
 public class SpringMonitorsLoaderTest {
 
