@@ -15,7 +15,23 @@
  */
 package uk.co.bssd.monitoring;
 
-public interface Alert {
+public class Alert<T> {
 
-	<T> void alert(AlertEvent<T> event);
+	private final Condition<T> condition;
+	private final Threshold threshold;
+	private final AlertListener alertListener;
+	
+	public Alert(Condition<T> condition, Threshold threshold, AlertListener alertListener) {
+		this.condition = condition;
+		this.threshold = threshold;
+		this.alertListener = alertListener;
+	}
+	
+	public void alertIfConditionBroken(T value) {
+		boolean conditionMet = this.condition.conditionMet(value);
+		if (this.threshold.thresholdBroken(conditionMet)) {
+			AlertEvent<T> event = new AlertEvent<T>(value, condition, threshold);
+			this.alertListener.alert(event);
+		}
+	}
 }

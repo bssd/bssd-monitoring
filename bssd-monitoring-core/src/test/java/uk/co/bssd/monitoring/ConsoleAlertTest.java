@@ -53,7 +53,7 @@ public class ConsoleAlertTest {
 
 	private PrintStream realOutputStream;
 
-	private Alert alert;
+	private AlertListener alert;
 	
 	@Before
 	public void before() {

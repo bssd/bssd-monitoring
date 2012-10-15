@@ -15,7 +15,7 @@
  */
 package uk.co.bssd.monitoring;
 
-import static org.mockito.Mockito.any;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
@@ -31,9 +31,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class MonitoringIntegrationTest {
 
 	private static final int TIMEOUT_MS = 1000;
-	
+
 	@Mock
-	private Alert mockAlert;
+	private AlertListener mockAlertListener;
 
 	private AtomicInteger monitoredValue;
 
@@ -47,26 +47,27 @@ public class MonitoringIntegrationTest {
 				new MonitoredValueAdapter<Integer>() {
 					@Override
 					public Integer currentValue() {
-						return MonitoringIntegrationTest.this.monitoredValue
-								.get();
+						return MonitoringIntegrationTest.this.monitoredValue.get();
 					}
-				}, new GreaterThan<Integer>(10), new ThresholdBreaksImmediately(),
-				this.mockAlert);
+				}, new Alert<Integer>(new GreaterThan<Integer>(10),
+						new ThresholdBreaksImmediately(), this.mockAlertListener));
 
 		this.monitors = new Monitors();
 		this.monitors.register(monitor, 1);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testWhenConditionIsNotBrokenAlertIsNotRaised() {
-		verify(this.mockAlert, timeout(TIMEOUT_MS).never()).alert(any(AlertEvent.class));
+		verify(this.mockAlertListener, timeout(TIMEOUT_MS).never()).alert(
+				any(AlertEvent.class));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testWhenConditionIsBrokenAlertIsRaised() {
 		this.monitoredValue.set(11);
-		verify(this.mockAlert, timeout(TIMEOUT_MS)).alert(any(AlertEvent.class));
+		verify(this.mockAlertListener, timeout(TIMEOUT_MS))
+				.alert(any(AlertEvent.class));
 	}
 }

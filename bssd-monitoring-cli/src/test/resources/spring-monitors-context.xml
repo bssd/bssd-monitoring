@@ -22,11 +22,15 @@
 
 	<bean name="consoleAlert" class="uk.co.bssd.monitoring.ConsoleAlert" />
 
-	<bean name="exampleMonitor" class="uk.co.bssd.monitoring.Monitor">
-		<constructor-arg name="adapter" ref="cpuUsageAdapter" />
+	<bean name="alert" class="uk.co.bssd.monitoring.Alert">
 		<constructor-arg name="condition" ref="valueGreaterThan70" />
 		<constructor-arg name="threshold" ref="thresholdBreaksImmediately" />
-		<constructor-arg name="alert" ref="consoleAlert" />
+		<constructor-arg name="alertListener" ref="consoleAlert" />
+	</bean>
+
+	<bean name="exampleMonitor" class="uk.co.bssd.monitoring.Monitor">
+		<constructor-arg name="adapter" ref="cpuUsageAdapter" />
+		<constructor-arg name="alert" ref="alert" />
 	</bean>
 
 	<bean name="exampleMonitorDefinition" class="uk.co.bssd.monitoring.loader.MonitorDefinition">

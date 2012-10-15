@@ -15,7 +15,7 @@
  */
 package uk.co.bssd.monitoring;
 
-public class ConsoleAlert implements Alert {
+public class ConsoleAlert implements AlertListener {
 
 	private static final String ALERT_TEMPLATE = "Current value [%s] has broken condition [%s] for threshold [%s]";
 	

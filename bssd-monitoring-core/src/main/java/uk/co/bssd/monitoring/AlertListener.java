@@ -15,16 +15,7 @@
  */
 package uk.co.bssd.monitoring;
 
-public class FixedValueAdapter<T> implements MonitoredValueAdapter<T>{
+public interface AlertListener {
 
-	private final T fixedValue;
-	
-	public FixedValueAdapter(T value) {
-		this.fixedValue = value;
-	}
-	
-	@Override
-	public T currentValue() {
-		return this.fixedValue;
-	}
+	<T> void alert(AlertEvent<T> event);
 }

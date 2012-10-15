@@ -23,7 +23,6 @@ import org.junit.Test;
 
 import uk.co.bssd.monitoring.Monitors;
 import uk.co.bssd.monitoring.loader.MonitorsLoader;
-import uk.co.bssd.monitoring.spring.SpringMonitorsLoader;
 
 public class SpringMonitorsLoaderTest {
 
