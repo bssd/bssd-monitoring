@@ -3,6 +3,12 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
 	<groupId>uk.co.bssd</groupId>
 	<artifactId>bssd-monitoring-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -13,15 +19,27 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<bssd.jmx.version>0.0.3</bssd.jmx.version>
+		<bssd.jmx.version>0.0.6</bssd.jmx.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
 	</properties>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:https://github.com/bssd/bssd-monitoring.git</connection>
+		<developerConnection>scm:git:https://github.com/bssd/bssd-monitoring.git</developerConnection>
+	</scm>
 
 	<modules>
 		<module>bssd-monitoring-core</module>
 		<module>bssd-monitoring-distribution</module>
 	</modules>
-
 
 	<build>
 		<pluginManagement>
