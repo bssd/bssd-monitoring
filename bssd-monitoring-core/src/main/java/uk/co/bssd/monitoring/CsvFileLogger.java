@@ -26,26 +26,29 @@ import org.slf4j.LoggerFactory;
 public class CsvFileLogger<T> implements ValueReporter<T> {
 
 	private static final String TIMESTAMP_PATTERN_EXCEL = "yyyy-MM-dd HH:mm:ss.SSS";
-	
+
 	private static final String APPENDER_NAME = "file";
 
 	private final String loggerId;
 	private final Logger logger;
+	private final String filename;
 
 	public CsvFileLogger(String filename) {
 		this(UUID.randomUUID().toString(), filename);
 	}
-	
+
 	public CsvFileLogger(String loggerId, String filename) {
 		this.loggerId = loggerId;
 		this.logger = LoggerFactory.getLogger(this.loggerId);
+		this.filename = filename;
 
 		if (log4jLogger().getAppender(APPENDER_NAME) == null) {
 			PatternLayout layout = new PatternLayout("%d{"
 					+ TIMESTAMP_PATTERN_EXCEL + "},%m%n");
 
 			try {
-				FileAppender fileAppender = new FileAppender(layout, filename);
+				FileAppender fileAppender = new FileAppender(layout,
+						this.filename);
 				fileAppender.setName(APPENDER_NAME);
 				log4jLogger().addAppender(fileAppender);
 			} catch (IOException e) {
@@ -60,5 +63,13 @@ public class CsvFileLogger<T> implements ValueReporter<T> {
 
 	public void report(T value) {
 		this.logger.info("{}", value);
+	}
+
+	public String id() {
+		return this.loggerId;
+	}
+
+	public String filename() {
+		return this.filename;
 	}
 }

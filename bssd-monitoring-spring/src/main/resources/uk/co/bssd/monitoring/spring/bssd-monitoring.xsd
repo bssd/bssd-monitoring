@@ -17,4 +17,14 @@
 		</xsd:complexType>
 	</xsd:element>
 
+	<xsd:element name="csv-file-reporter">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:attribute name="filename" type="xsd:string" use="optional" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
 </xsd:schema>
