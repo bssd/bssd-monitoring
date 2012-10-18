@@ -24,24 +24,36 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import uk.co.bssd.monitoring.CpuUsageAdapter;
+import uk.co.bssd.monitoring.loader.MonitorDefinition;
 
-public class CpuUsageAdapterBeanDefinitionParserTest {
+public class MonitorBeanDefinitionParserTest {
 
 	private ApplicationContext context;
-	
+
 	@Before
 	public void before() {
-		this.context = new ClassPathXmlApplicationContext("classpath:cpu-usage-adapter-context.xml");
+		this.context = new ClassPathXmlApplicationContext(
+				"classpath:monitor-bean-parser-context.xml");
+	}
+
+	@Test
+	public void testMonitorDefinitionBeanIsParsedCorrectly() {
+		assertThat(monitorDefinition(), is(notNullValue()));
+	}
+
+	@Test
+	public void testMonitorDefinitionHasCorrectMonitor() {
+		assertThat(
+				monitorDefinition().monitor().toString(),
+				is("Value Adapter [CpuUsageAdapter], Alert [null], Value Reporter [CsvFileLogger with id [csvFileReporter] logging to file [target/namespaceMonitor.csv]]"));
 	}
 	
 	@Test
-	public void testCpuUsageAdapterBeanIsParsedCorrectly() {
-		assertThat(this.context.getBean(CpuUsageAdapter.class), is(notNullValue()));
+	public void testMonitorIntervalHasBeenSetCorrectly() {
+		assertThat(monitorDefinition().monitorPeriodMs(), is(3982L));
 	}
-	
-	@Test
-	public void testCpuUsageAdapterBeanCanBeFoundById() {
-		assertThat(this.context.getBean("cpuUsage"), is(notNullValue()));
+
+	private MonitorDefinition monitorDefinition() {
+		return this.context.getBean(MonitorDefinition.class);
 	}
 }

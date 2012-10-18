@@ -38,7 +38,4 @@
 		<constructor-arg name="monitor" ref="exampleMonitor" />
 		<constructor-arg name="monitorPeriodMs" value="10" />
 	</bean>
-
-	<monitor:monitor id="namespaceMonitor"
-		monitorIntervalMs="1000" />
 </beans>

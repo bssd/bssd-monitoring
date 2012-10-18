@@ -72,4 +72,9 @@ public class CsvFileLogger<T> implements ValueReporter<T> {
 	public String filename() {
 		return this.filename;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s with id [%s] logging to file [%s]", CsvFileLogger.class.getSimpleName(), id(), filename()); 
+	}
 }

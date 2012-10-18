@@ -41,6 +41,6 @@ public class SpringMonitorsLoaderTest {
 	@Test
 	public void testLoadMonitorsAddsMonitor() {
 		this.loader.load(this.monitors);
-		assertThat(this.monitors.list().size(), is(2));
+		assertThat(this.monitors.list().size(), is(1));
 	}
 }

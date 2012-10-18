@@ -30,4 +30,9 @@ public class CpuUsageAdapter implements MonitoredValueAdapter<Double> {
 	public Double currentValue() {
 		return this.processBean.cpuUsage();
 	}
+	
+	@Override
+	public String toString() {
+		return CpuUsageAdapter.class.getSimpleName();
+	}
 }

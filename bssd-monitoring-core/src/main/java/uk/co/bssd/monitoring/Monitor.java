@@ -25,6 +25,10 @@ public class Monitor<T> {
 		this(adapter, alert, new DoNothingValueReporter<T>());
 	}
 
+	public Monitor(MonitoredValueAdapter<T> adapter, ValueReporter<T> reporter) {
+		this(adapter, null, reporter);
+	}
+
 	public Monitor(MonitoredValueAdapter<T> adapter, Alert<T> alert,
 			ValueReporter<T> reporter) {
 		this.valueAdapter = adapter;
@@ -35,7 +39,9 @@ public class Monitor<T> {
 	public void monitor() {
 		T value = this.valueAdapter.currentValue();
 		this.valueReporter.report(value);
-		this.alert.alertIfConditionBroken(value);
+		if (this.alert != null) {
+			this.alert.alertIfConditionBroken(value);
+		}
 	}
 
 	@Override
