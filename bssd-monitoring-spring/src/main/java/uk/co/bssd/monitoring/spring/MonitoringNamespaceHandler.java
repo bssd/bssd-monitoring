@@ -9,5 +9,6 @@ public class MonitoringNamespaceHandler extends NamespaceHandlerSupport {
 		registerBeanDefinitionParser("monitor", new MonitorBeanDefinitionParser());
 		registerBeanDefinitionParser("csv-file-reporter", new CsvFileLoggerBeanDefinitionParser());
 		registerBeanDefinitionParser("cpu-usage-adapter", new CpuUsageAdapterBeanDefinitionParser());
+		registerBeanDefinitionParser("jmx-attribute-adapter", new JmxAttributeAdapterBeanDefinitionParser());
 	}
 }

@@ -38,4 +38,21 @@
 		</xsd:complexType>
 	</xsd:element>
 
+	<xsd:element name="jmx-attribute-adapter">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:attribute name="managementBeanServerRef" type="xsd:string"
+						use="required" />
+					<xsd:attribute name="objectName" type="xsd:string"
+						use="required" />
+					<xsd:attribute name="attributeName" type="xsd:string"
+						use="required" />
+					<xsd:attribute name="type" type="xsd:string"
+						use="required" />
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
 </xsd:schema>
