@@ -15,16 +15,24 @@
  */
 package uk.co.bssd.monitoring.spring;
 
-import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
+import org.w3c.dom.Element;
 
-public class MonitoringNamespaceHandler extends NamespaceHandlerSupport {
+import uk.co.bssd.monitoring.HeapMemoryUsedAdapter;
+
+public class HeapMemoryUsedAdapterBeanDefinitionParser extends
+		AbstractSingleBeanDefinitionParser {
 
 	@Override
-	public void init() {
-		registerBeanDefinitionParser("monitor", new MonitorBeanDefinitionParser());
-		registerBeanDefinitionParser("csv-file-reporter", new CsvFileLoggerBeanDefinitionParser());
-		registerBeanDefinitionParser("cpu-usage-adapter", new CpuUsageAdapterBeanDefinitionParser());
-		registerBeanDefinitionParser("heap-memory-used-adapter", new HeapMemoryUsedAdapterBeanDefinitionParser());
-		registerBeanDefinitionParser("jmx-attribute-adapter", new JmxAttributeAdapterBeanDefinitionParser());
+	protected Class<?> getBeanClass(Element element) {
+		return HeapMemoryUsedAdapter.class;
+	}
+
+	@Override
+	protected void doParse(Element element, BeanDefinitionBuilder bean) {
+		String managementBeanServerName = element
+				.getAttribute("managementBeanServerRef");
+		bean.addConstructorArgReference(managementBeanServerName);
 	}
 }
